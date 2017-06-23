@@ -26,7 +26,7 @@ import bpy
 import bmesh
 
 if "bpy" in locals():
-        import importlib       
+        import importlib
         try:
             importlib.reload(mesh_maze)
 
@@ -54,7 +54,7 @@ class MESH_OT_maze_mesh(bpy.types.Operator):
     bl_label = "Maze mesh selection"
     bl_description = "Generate a maze on selected part of mesh"
     bl_options = {'REGISTER', 'UNDO'}
-    
+
     @classmethod
     def poll(cls, context):
         obj = context.edit_object
@@ -62,7 +62,7 @@ class MESH_OT_maze_mesh(bpy.types.Operator):
 
     link_centers= []
     vert_centers= []
-    
+
     #properties for bevel operator
     offset_modes = (
         ("0", "Offset", "Width is offset of new edges from original", 1),
@@ -153,7 +153,7 @@ class MESH_OT_maze_mesh(bpy.types.Operator):
         name='Advanced Options',
         description='More options',
         default=False)
-        
+
     update = bpy.props.BoolProperty(
         name='update maze',
         description='update maze',
@@ -187,7 +187,7 @@ class MESH_OT_maze_mesh(bpy.types.Operator):
             box_wall.prop(self, 'use_outset')
 
 
-                  
+
     def get_maze_params(self):
         """
         build maze parameters dictionary from properties
@@ -217,19 +217,20 @@ class MESH_OT_maze_mesh(bpy.types.Operator):
 
         obj = context.object
         bm = bmesh.from_edit_mesh(obj.data)
-       
+
         if len(self.vert_centers) == 0:
             self.update = True
         maze_params = self.get_maze_params()
         bm, self.link_centers, self.vert_centers = generate_maze(bm, maze_params)
         self.update = False
+        bpy.ops.mesh.select_mode(type='FACE')
         bmesh.update_edit_mesh(obj.data, destructive=True)
 
         return {'FINISHED'}
 
 def menu_func(self, context):
     self.layout.operator("mesh.maze_mesh")
-    
+
 def register():
     bpy.utils.register_class(MESH_OT_maze_mesh)
     bpy.types.VIEW3D_MT_edit_mesh_specials.prepend(menu_func)

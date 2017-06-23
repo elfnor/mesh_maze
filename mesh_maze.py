@@ -8,11 +8,6 @@ maze mesh mod
 should be standalone and able to run with a profiler or against unit tests
 
 """
-import sys
-sys.path.append('/home/elfnor/anaconda3/lib/python3.5/site-packages')
-
-from line_profiler import LineProfiler
-profile = LineProfiler()
 
 import random
 import bmesh
@@ -35,7 +30,6 @@ MAZE_PARAMS['use_outset'] = False
 MAZE_PARAMS['use_relative_offset'] = False
 MAZE_PARAMS['braid'] = 0.0
 
-@profile
 def generate_maze(bm, maze_params):
     """
     generate the maze on the bm bmesh
@@ -163,7 +157,6 @@ def get_maze_centers(maze_path, maze_verts):
     maze_verts_co = [list(v.co) for v in maze_verts]
     return link_centers, maze_verts_co
 
-@profile
 def bevel_extrude(bm, sel_geom, maze_params, link_centers, vert_centers):
     """
     perform the bevel and extrude on the selected geometry
@@ -208,7 +201,6 @@ def bevel_extrude(bm, sel_geom, maze_params, link_centers, vert_centers):
         for edge in path_edges:
             edge.select = True
 
-@profile
 def get_maze_faces(bm, bevel_faces, maze_centers, boundary_type):
     """find which of the faces in bm  are in the path and which are in the wall
     inputs:
@@ -334,4 +326,3 @@ def maze_nghbrs(vert, maze_path):
               for link_edge in vert.link_edges
               if link_edge in maze_path]
     return nghbrs
-    
