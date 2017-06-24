@@ -25,14 +25,6 @@ Uses the recursive backtracker maze algorithm
 import bpy
 import bmesh
 
-if "bpy" in locals():
-        import importlib
-        try:
-            importlib.reload(mesh_maze)
-
-        except Exception as E:
-            print('reload failed with error:')
-            print(E)
 
 from .mesh_maze import generate_maze
 
@@ -57,13 +49,14 @@ class MESH_OT_maze_mesh(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
+        """ check in edit mode"""
         obj = context.edit_object
         return obj is not None and obj.type == 'MESH'
 
-    link_centers= []
-    vert_centers= []
+    link_centers = []
+    vert_centers = []
 
-    #properties for bevel operator
+    # properties for bevel operator
     offset_modes = (
         ("0", "Offset", "Width is offset of new edges from original", 1),
         ("1", "Width", "Width is width of new face", 2),
@@ -98,7 +91,7 @@ class MESH_OT_maze_mesh(bpy.types.Operator):
         description='Prefer slide along edge to even widths',
         default=True)
 
-    #properties for inset operator
+    # properties for inset operator
 
     use_even_offset = bpy.props.BoolProperty(
         name='Offset Even',
@@ -125,7 +118,7 @@ class MESH_OT_maze_mesh(bpy.types.Operator):
         description='Outset rather than inset',
         default=False)
 
-    #properties for maze
+    # properties for maze
     def update_maze(self, context):
         """
         maze path needs updating after changing rseed or braid
@@ -160,6 +153,7 @@ class MESH_OT_maze_mesh(bpy.types.Operator):
         default=True)
 
     def draw(self, context):
+        """draw tool operator panel"""
         layout = self.layout
 
         box_maze = layout.box()
@@ -185,8 +179,6 @@ class MESH_OT_maze_mesh(bpy.types.Operator):
             box_wall.prop(self, 'use_even_offset')
             box_wall.prop(self, 'thickness')
             box_wall.prop(self, 'use_outset')
-
-
 
     def get_maze_params(self):
         """
@@ -228,17 +220,24 @@ class MESH_OT_maze_mesh(bpy.types.Operator):
 
         return {'FINISHED'}
 
+
 def menu_func(self, context):
+    """ single menu entry"""
     self.layout.operator("mesh.maze_mesh")
 
+
 def register():
+    """ add to specials menu"""
     bpy.utils.register_class(MESH_OT_maze_mesh)
     bpy.types.VIEW3D_MT_edit_mesh_specials.prepend(menu_func)
 
+
 def unregister():
+    """ remove from specials menu"""
     bpy.utils.unregister_class(MESH_OT_maze_mesh)
     bpy.types.VIEW3D_MT_edit_mesh_specials.remove(menu_func)
     print('unregistered')
+
 
 if __name__ == "__main__":
     register()
