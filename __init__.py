@@ -206,8 +206,8 @@ class MESH_OT_maze_mesh(bpy.types.Operator):
     def execute(self, context):
         """build maze
         """
-
         obj = context.object
+        bpy.ops.mesh.select_mode(type='FACE')
         bm = bmesh.from_edit_mesh(obj.data)
 
         if len(self.vert_centers) == 0:
