@@ -1,5 +1,5 @@
 ![maze](./images/maze.png)
-This [Blender]() add-on runs a recursive back tracker maze algorithm over the selected part of any mesh to produce a maze.
+This [Blender](https://www.blender.org/) add-on runs a recursive back tracker maze algorithm over the selected part of any mesh to produce a maze.
 
 ![round cube maze](./images/round_cube.png)
 
@@ -9,9 +9,9 @@ Here the mesh vertices are equivalent to cells and the mesh edge connections def
 
 ![maze](./images/maze__2D_simple_02_012.png)
 
-I originally realized this concept as a scripted node for the [Sverchok]() add-on but have now completely rewritten the code into this separate standalone add-on for Blender.
+I originally realized this concept as a scripted node for the [Sverchok](http://nikitron.cc.ua/sverchok_en.html) add-on but have now completely rewritten the code into this separate standalone add-on for Blender.
 
-The add-on can be installed in the normal way by downloading the zip file from the github repository, then `File -> User Preferences -> Add-ons -> Install from File...`
+The add-on can be installed in the normal way by downloading the zip file from the [github repository](https://github.com/elfnor/mesh_maze), then `File -> User Preferences -> Add-ons -> Install from File...`
 
 Once installed and enabled the add-on can be found in *Edit Mode* on the *Specials* `W` menu, or using the `Spacebar` menu to search for *maze*.
 
@@ -20,8 +20,7 @@ After carving the maze along the edges, the add-on (by default) bevels all the e
 ![moebius maze](./images/moebius_02_003.png)
 
 
-
-Maze Parameters
+## Maze Parameters
 
 Changing the *Random Seed* parameter will recalculate a different maze on the same selection.
 
@@ -31,7 +30,7 @@ The *Boundary Wall Type* is only applicable if part of the mesh is selected to r
 
 *Advanced Options* adds some extra parameters to the Path and Wall Parameters that effect the bevel and extrude operators.
 
-Path Parameters
+## Path Parameters
 
 *Bevel Amount Type* sets how the amount slider effects the bevel or path width. See the [bevel operator]() documentation for details.
 
@@ -39,20 +38,21 @@ The *Path Width* sets the width of the path. If set to zero only the edges of th
 
 The *Clamp Overlay* and *Loop Slide* parameters are passed straight to the [bevel operator]().
 
-Wall Parameters
+## Wall Parameters
 
-*Offset Relative*
+*Offset Relative* - scales the offset relative to the surrounding geometry.
 
-*Extrude*
+*Extrude* - gives the height of the maze walls.
 
-*Offset Even*
+*Offset Even* - scales the offset to give more even thickness to the top width of the walls.
 
-*Thickness*
+*Thickness* - narrows the top of the wall to give a tapered profile.
 
-*Outset*
+*Outset* - if the walls are tapered the tapered part extends into the path area.
 
 ![large mesh](./images/stereosphere_022.png)
-Large meshes
+
+## Large meshes
 
 The mesh maze add-on takes about 8 seconds (on my machine) to generate a maze on an icosphere with ~10 000 vertices. It has been optimized so that the maze path is regenerated if the random seed or braiding values are changed but not for changes to the path width or wall height.
 
