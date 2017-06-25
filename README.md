@@ -1,4 +1,6 @@
 ![maze](./images/maze.png)
+
+
 This [Blender](https://www.blender.org/) add-on runs a recursive back tracker maze algorithm over the selected part of any mesh to produce a maze.
 
 ![round cube maze](./images/round_cube.png)
