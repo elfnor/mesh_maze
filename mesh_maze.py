@@ -37,7 +37,7 @@ def generate_maze(bm, maze_params):
     """
     bm.verts.ensure_lookup_table()
     bm.edges.ensure_lookup_table()
-    sel_geom, inner_edges = get_inner_edges(bm)
+    sel_geom, inner_edges = get_inner_edges(bm, maze_params['boundary_type'])
     if maze_params['maze_update']:
         all_edges = sorted(bm.edges, key=lambda edge: edge.index)
         full_mesh = inner_edges == all_edges
@@ -55,7 +55,7 @@ def generate_maze(bm, maze_params):
     return bm, link_centers, vert_centers
 
 
-def get_inner_edges(bm):
+def get_inner_edges(bm, boundary_type):
     """get the edges to run maze on
     ignore the outer edge of selection and any edges with any verts on boundary
     input:
@@ -69,27 +69,29 @@ def get_inner_edges(bm):
     sel_edges = [e for e in bm.edges if e.select]
     sel_faces = [f for f in bm.faces if f.select]
     sel_geom = sel_verts + sel_edges + sel_faces
+    if boundary_type != 2:
+        border_geom = bmesh.ops.region_extend(
+            bm, geom=sel_geom,
+            use_faces=False,
+            use_face_step=True,
+            use_contract=True)
 
-    border_geom = bmesh.ops.region_extend(
-        bm, geom=sel_geom,
-        use_faces=False,
-        use_face_step=True,
-        use_contract=True)
+        border_edges = [e for e in border_geom['geom']
+                        if isinstance(e, bmesh.types.BMEdge)]
 
-    border_edges = [e for e in border_geom['geom']
-                    if isinstance(e, bmesh.types.BMEdge)]
+        boundary_edges = [e for e in sel_edges
+                          if (e.verts[0].is_boundary)
+                          or (e.verts[1].is_boundary)]
 
-    boundary_edges = [e for e in sel_edges
-                      if (e.verts[0].is_boundary)
-                      or (e.verts[1].is_boundary)]
+        outer_edges = set(border_edges + boundary_edges)
 
-    outer_edges = set(border_edges + boundary_edges)
-
-    inner_edges = list(set(sel_edges) - outer_edges)
-    # need to sort the list of edges on index so the same maze
-    # gets regenerated for the same value of rseed
-    # profile shows this is not comapritively expensive even for large meshes
-    inner_edges.sort(key=lambda edge: edge.index)
+        inner_edges = list(set(sel_edges) - outer_edges)
+        # need to sort the list of edges on index so the same maze
+        # gets regenerated for the same value of rseed
+        # profile shows this is not comapritively expensive even for large meshes
+        inner_edges.sort(key=lambda edge: edge.index)
+    else:
+        inner_edges = sorted(sel_edges, key=lambda edge: edge.index)
     return sel_geom, inner_edges
 
 
