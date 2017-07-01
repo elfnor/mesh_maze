@@ -207,7 +207,7 @@ class MESH_OT_maze_mesh(bpy.types.Operator):
         """build maze
         """
         obj = context.object
-        bpy.ops.mesh.select_mode(type='FACE')
+        #bpy.ops.mesh.select_mode(type='FACE')
         bm = bmesh.from_edit_mesh(obj.data)
 
         if len(self.vert_centers) == 0:
@@ -215,7 +215,7 @@ class MESH_OT_maze_mesh(bpy.types.Operator):
         maze_params = self.get_maze_params()
         bm, self.link_centers, self.vert_centers = generate_maze(bm, maze_params)
         self.update = False
-        bpy.ops.mesh.select_mode(type='FACE')
+        #bpy.ops.mesh.select_mode(type='FACE')
         bmesh.update_edit_mesh(obj.data, destructive=True)
 
         return {'FINISHED'}

@@ -81,7 +81,9 @@ class TestMeshMaze(unittest.TestCase):
         bm = make_edge_selection_grid(bm)
         
         sel_geom, inner_edges = mm.get_inner_edges(bm, 2)
-
+        
+        put_to_scene(bm)
+        
         self.assertEqual(len(sel_geom), 64 + 84)
         self.assertEqual(len(inner_edges), 84)
         bm.free()
@@ -115,11 +117,11 @@ class TestMeshMaze(unittest.TestCase):
         nverts = sum(vert.select for vert in bm.verts)
         
         maze_params = mm.MAZE_PARAMS.copy()
-        maze_params['boundary_type'] = 2
+        maze_params['boundary_type'] = 1
         maze_params['offset'] = 0.0
         bm, maze_links, maze_verts = mm.generate_maze(bm, maze_params)
 
-        put_to_scene(bm)
+        
 
         self.assertEqual(len(maze_links), 63)
         self.assertEqual(len(maze_verts), nverts)
