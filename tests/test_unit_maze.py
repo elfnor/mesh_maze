@@ -14,10 +14,12 @@ def put_to_scene(bm):
     obj = bpy.context.object
     bm.to_mesh(obj.data)
     obj.data.update()
-    bpy.ops.object.mode_set(mode='EDIT', toggle=False)
-    bpy.ops.mesh.select_mode(type='EDGE')    
+
 
 def make_edge_selection_grid(bm):
+    """
+    select a sparse grid on bm, where bm is a 10 x 10 grid
+    """
     boundary_edges = set([
         e
         for e in bm.edges
@@ -34,7 +36,8 @@ def make_edge_selection_grid(bm):
     sel_edges = sel_edges - boundary_edges
     for edge in sel_edges:
         edge.select = True
-    return bm           
+    return bm
+
 
 class TestMeshMaze(unittest.TestCase):
 
@@ -79,11 +82,11 @@ class TestMeshMaze(unittest.TestCase):
         bmesh.ops.create_grid(bm, x_segments=10, y_segments=10, size=1.0)
 
         bm = make_edge_selection_grid(bm)
-        
+
         sel_geom, inner_edges = mm.get_inner_edges(bm, 2)
-        
-        put_to_scene(bm)
-        
+
+        #put_to_scene(bm)
+
         self.assertEqual(len(sel_geom), 64 + 84)
         self.assertEqual(len(inner_edges), 84)
         bm.free()
@@ -104,6 +107,27 @@ class TestMeshMaze(unittest.TestCase):
         # also count of selected faces should == 63+64
         self.assertEqual(sum(face.select for face in bm.faces), 127)
         bm.free()
+        
+    def test_generate_maze_full_grid_vert_mode(self):
+        """
+        generate full maze on 10 x 10 grid
+        test changing to vertex select mode
+        """
+
+        bm = bmesh.new()
+        bmesh.ops.create_grid(bm, x_segments=10, y_segments=10, size=1.0)
+        for face in bm.faces:
+            face.select = True
+
+        bm, maze_links, maze_verts = mm.generate_maze(bm, mm.MAZE_PARAMS)
+        put_to_scene(bm)
+#        bpy.ops.object.mode_set(mode='EDIT')
+#        bpy.ops.mesh.select_mode(type='VERT')        
+        self.assertEqual(len(maze_links), 63)
+        self.assertEqual(len(maze_verts), 64)
+        # also count of selected faces should == 63+64
+        self.assertEqual(sum(face.select for face in bm.faces), 127)
+        bm.free()
 
     def test_generate_maze_loops_grid(self):
         """
@@ -115,13 +139,11 @@ class TestMeshMaze(unittest.TestCase):
 
         bm = make_edge_selection_grid(bm)
         nverts = sum(vert.select for vert in bm.verts)
-        
+
         maze_params = mm.MAZE_PARAMS.copy()
         maze_params['boundary_type'] = 1
         maze_params['offset'] = 0.0
         bm, maze_links, maze_verts = mm.generate_maze(bm, maze_params)
-
-        
 
         self.assertEqual(len(maze_links), 63)
         self.assertEqual(len(maze_verts), nverts)

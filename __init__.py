@@ -31,7 +31,7 @@ from .mesh_maze import generate_maze
 bl_info = {
     "name": "Maze any Mesh",
     "author": "elfnor <elfnor.com>",
-    "version": (1, 0),
+    "version": (1, 1),
     "blender": (2, 7, 8),
     "location": "View3D > EditMode > (w) Specials",
     "description": "Convert any mesh to a maze pattern",
@@ -207,15 +207,19 @@ class MESH_OT_maze_mesh(bpy.types.Operator):
         """build maze
         """
         obj = context.object
-        #bpy.ops.mesh.select_mode(type='FACE')
+
         bm = bmesh.from_edit_mesh(obj.data)
 
         if len(self.vert_centers) == 0:
             self.update = True
         maze_params = self.get_maze_params()
+        if abs(maze_params['offset']) < 0.001:
+            bpy.ops.mesh.select_mode(type='EDGE')
+        else:
+            bpy.ops.mesh.select_mode(type='FACE')
         bm, self.link_centers, self.vert_centers = generate_maze(bm, maze_params)
         self.update = False
-        #bpy.ops.mesh.select_mode(type='FACE')
+
         bmesh.update_edit_mesh(obj.data, destructive=True)
 
         return {'FINISHED'}
