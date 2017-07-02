@@ -108,26 +108,6 @@ class TestMeshMaze(unittest.TestCase):
         self.assertEqual(sum(face.select for face in bm.faces), 127)
         bm.free()
         
-    def test_generate_maze_full_grid_vert_mode(self):
-        """
-        generate full maze on 10 x 10 grid
-        test changing to vertex select mode
-        """
-
-        bm = bmesh.new()
-        bmesh.ops.create_grid(bm, x_segments=10, y_segments=10, size=1.0)
-        for face in bm.faces:
-            face.select = True
-
-        bm, maze_links, maze_verts = mm.generate_maze(bm, mm.MAZE_PARAMS)
-        put_to_scene(bm)
-#        bpy.ops.object.mode_set(mode='EDIT')
-#        bpy.ops.mesh.select_mode(type='VERT')        
-        self.assertEqual(len(maze_links), 63)
-        self.assertEqual(len(maze_verts), 64)
-        # also count of selected faces should == 63+64
-        self.assertEqual(sum(face.select for face in bm.faces), 127)
-        bm.free()
 
     def test_generate_maze_loops_grid(self):
         """
