@@ -213,10 +213,8 @@ class MESH_OT_maze_mesh(bpy.types.Operator):
         if len(self.vert_centers) == 0:
             self.update = True
         maze_params = self.get_maze_params()
-        if abs(maze_params['offset']) < 0.001:
-            bpy.ops.mesh.select_mode(type='EDGE')
-        else:
-            bpy.ops.mesh.select_mode(type='FACE')
+        bpy.ops.mesh.select_mode(type='EDGE')
+    
         bm, self.link_centers, self.vert_centers = generate_maze(bm, maze_params)
         self.update = False
 
