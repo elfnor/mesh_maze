@@ -31,9 +31,9 @@ from .mesh_maze import generate_maze
 bl_info = {
     "name": "Maze any Mesh",
     "author": "elfnor <elfnor.com>",
-    "version": (1, 1),
-    "blender": (2, 7, 8),
-    "location": "View3D > EditMode > (w) Specials",
+    "version": (1, 2),
+    "blender": (2, 80, 0),
+    "location": "View3D EditMesh Menu -> Maze mesh selection",
     "description": "Convert any mesh to a maze pattern",
     "warning": "",
     "category": "Mesh",
@@ -58,10 +58,10 @@ class MESH_OT_maze_mesh(bpy.types.Operator):
 
     # properties for bevel operator
     offset_modes = (
-        ("0", "Offset", "Width is offset of new edges from original", 1),
-        ("1", "Width", "Width is width of new face", 2),
-        ("2", "Depth", "Width is distance from original edge to bevel face", 3),
-        ("3", "Percent", "Width is percent of adjacent edge length", 4)
+        ("0", "OFFSET", "Width is offset of new edges from original", 1),
+        ("1", "WIDTH", "Width is width of new face", 2),
+        ("2", "DEPTH", "Width is distance from original edge to bevel face", 3),
+        ("3", "PERCENT", "Width is percent of adjacent edge length", 4)
     )
 
     wall_types = (
@@ -190,7 +190,8 @@ class MESH_OT_maze_mesh(bpy.types.Operator):
         maze_params['link_centers'] = self.link_centers
         maze_params['vert_centers'] = self.vert_centers
         maze_params['offset'] = self.offset
-        maze_params['offset_type'] = int(self.offset_type)
+        # TODO As an fix process, we hard-code `offset_type`, it should be selected from the menu from now on.
+        maze_params['offset_type'] = 'OFFSET'
         maze_params['use_loop_slide'] = self.use_loop_slide
         maze_params['use_clamp_overlap'] = self.use_clamp_overlap
         maze_params['boundary_type'] = int(self.boundary_type)
@@ -214,7 +215,7 @@ class MESH_OT_maze_mesh(bpy.types.Operator):
             self.update = True
         maze_params = self.get_maze_params()
         bpy.ops.mesh.select_mode(type='EDGE')
-    
+
         bm, self.link_centers, self.vert_centers = generate_maze(bm, maze_params)
         self.update = False
 
@@ -231,13 +232,13 @@ def menu_func(self, context):
 def register():
     """ add to specials menu"""
     bpy.utils.register_class(MESH_OT_maze_mesh)
-    bpy.types.VIEW3D_MT_edit_mesh_specials.prepend(menu_func)
+    bpy.types.VIEW3D_MT_edit_mesh.prepend(menu_func)
 
 
 def unregister():
     """ remove from specials menu"""
     bpy.utils.unregister_class(MESH_OT_maze_mesh)
-    bpy.types.VIEW3D_MT_edit_mesh_specials.remove(menu_func)
+    bpy.types.VIEW3D_MT_edit_mesh.remove(menu_func)
     print('unregistered')
 
 
