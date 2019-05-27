@@ -58,10 +58,10 @@ class MESH_OT_maze_mesh(bpy.types.Operator):
 
     # properties for bevel operator
     offset_modes = (
-        ("0", "OFFSET", "Width is offset of new edges from original", 1),
-        ("1", "WIDTH", "Width is width of new face", 2),
-        ("2", "DEPTH", "Width is distance from original edge to bevel face", 3),
-        ("3", "PERCENT", "Width is percent of adjacent edge length", 4)
+        ("OFFSET", "Offset", "Width is offset of new edges from original", 1),
+        ("WIDTH", "Width", "Width is width of new face", 2),
+        ("DEPTH", "Depth", "Width is distance from original edge to bevel face", 3),
+        ("PERCENT", "Percent", "Width is percent of adjacent edge length", 4)
     )
 
     wall_types = (
@@ -156,29 +156,29 @@ class MESH_OT_maze_mesh(bpy.types.Operator):
         """draw tool operator panel"""
         layout = self.layout
 
-        box_maze = layout.box()
-        box_maze.label('Maze Parameters')
-        box_maze.prop(self, 'rseed')
-        box_maze.prop(self, 'braid')
-        box_maze.prop(self, 'boundary_type')
-        box_maze.prop(self, 'options')
+        col = layout.column()
 
-        box_path = layout.box()
-        box_path.label('Path Paramters')
-        box_path.prop(self, 'offset_type', text='')
-        box_path.prop(self, 'offset')
-        if self.options:
-            box_path.prop(self, 'use_clamp_overlap')
-            box_path.prop(self, 'use_loop_slide')
+        # row = col.row()
+        col.label(text='Maze Parameters')
+        col.prop(self, 'rseed')
+        col.prop(self, 'braid')
+        col.prop(self, 'boundary_type')
+        col.prop(self, 'options')
 
-        box_wall = layout.box()
-        box_wall.label('Wall Paramters')
-        box_wall.prop(self, 'use_relative_offset')
-        box_wall.prop(self, 'depth')
+        col.label(text='Path Paramters')
+        col.prop(self, 'offset_type', text='')
+        col.prop(self, 'offset')
         if self.options:
-            box_wall.prop(self, 'use_even_offset')
-            box_wall.prop(self, 'thickness')
-            box_wall.prop(self, 'use_outset')
+            col.prop(self, 'use_clamp_overlap')
+            col.prop(self, 'use_loop_slide')
+
+        col.label(text='Wall Paramters')
+        col.prop(self, 'use_relative_offset')
+        col.prop(self, 'depth')
+        if self.options:
+            col.prop(self, 'use_even_offset')
+            col.prop(self, 'thickness')
+            col.prop(self, 'use_outset')
 
     def get_maze_params(self):
         """
@@ -190,8 +190,7 @@ class MESH_OT_maze_mesh(bpy.types.Operator):
         maze_params['link_centers'] = self.link_centers
         maze_params['vert_centers'] = self.vert_centers
         maze_params['offset'] = self.offset
-        # TODO As an fix process, we hard-code `offset_type`, it should be selected from the menu from now on.
-        maze_params['offset_type'] = 'OFFSET'
+        maze_params['offset_type'] = self.offset_type
         maze_params['use_loop_slide'] = self.use_loop_slide
         maze_params['use_clamp_overlap'] = self.use_clamp_overlap
         maze_params['boundary_type'] = int(self.boundary_type)
