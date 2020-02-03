@@ -90,6 +90,9 @@ class TestMeshMaze(unittest.TestCase):
         self.assertEqual(len(sel_geom), 64 + 84)
         self.assertEqual(len(inner_edges), 84)
         bm.free()
+        
+    def test_type_offset_type(self):
+        self.assertIsInstance(mm.MAZE_PARAMS['offset_type'], str)
 
     def test_generate_maze_full_grid(self):
         """
