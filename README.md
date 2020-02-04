@@ -2,7 +2,6 @@
 
 This add-on has been updated to Blender 2.8 in the master branch (tested on 2.81.15), the Blender 2.7 version is now in a separate branch.
 
-
 This [Blender](https://www.blender.org/) add-on runs a recursive back tracker maze algorithm over the selected part of any mesh to produce a maze.
 
 ![round cube maze](./images/mesh_maze_screenshot.png)
@@ -22,7 +21,6 @@ Once installed and enabled the add-on can be found in *Edit Mode* on the *Mesh* 
 After carving the maze along the edges, the add-on (by default) bevels all the edges in the selection to give the maze path some width and then extrudes the walls of the mesh outward to give the maze some height.
 
 ![moebius maze](./images/moebius_02_003.png)
-
 
 ## Maze Parameters
 
@@ -54,7 +52,7 @@ The *Clamp Overlay* and *Loop Slide* parameters are passed straight to the [beve
 
 *Outset* - if the walls are tapered the tapered part extends into the path area.
 
-![large mesh](./images/stereosphere_022.png)
+![hedge maze](./images/hedge_maze.png)
 
 ## Large meshes
 
