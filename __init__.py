@@ -222,12 +222,9 @@ class MESH_OT_maze_mesh(bpy.types.Operator):
             return {'CANCELLED'}
 
         bm = bmesh.from_edit_mesh(obj.data)
-
         
         if len(self.vert_centers) == 0:
             self.update = True
-
-        
 
         maze_params = self.get_maze_params()
         bpy.ops.mesh.select_mode(type='EDGE')
