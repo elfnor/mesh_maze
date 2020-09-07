@@ -178,7 +178,7 @@ def bevel_extrude(bm, sel_geom, maze_params, link_centers, vert_centers):
             offset=maze_params['offset'],
             offset_type=maze_params['offset_type'],
             segments=1,
-            profile=0.5, vertex_only=0,
+            profile=0.5, affect='EDGES',
             loop_slide=maze_params['use_loop_slide'],
             clamp_overlap=maze_params['use_clamp_overlap'],
             material=-1)
