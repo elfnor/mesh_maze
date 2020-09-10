@@ -1,6 +1,6 @@
 ![maze](./images/maze.png)
 
-This add-on has been updated to Blender 2.8 in the master branch (tested on 2.81.15), the Blender 2.7 version is now in a separate branch.
+This add-on has been updated to Blender 2.9 in the master branch (tested on 2.90.0), the Blender 2.7 version is now in a separate branch.
 
 This [Blender](https://www.blender.org/) add-on runs a recursive back tracker maze algorithm over the selected part of any mesh to produce a maze.
 
