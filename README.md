@@ -58,4 +58,45 @@ The *Clamp Overlay* and *Loop Slide* parameters are passed straight to the [beve
 
 The mesh maze add-on takes about 8 seconds (on my machine) to generate a maze on an icosphere with ~10 000 vertices. It has been optimized so that the maze path is regenerated if the random seed or braiding values are changed but not for changes to the path width or wall height.
 
+## 3D mazes
+
 ![maze 3d](./images/maze_3D.png)
+
+The add-on can be run on 3D networks of vertices and edges to produce 3D mazes. These networks should have no faces. In this case the edges that are part of the maze will be remain selected after the add-on is run. When a mesh has no faces the path and wall parameters are ignored. It is up to the user to invert the selection and delete the edges not in the maze. The edges can then given shape with a skin modifier.
+
+For example:
+
+Add a 5 x 5 grid  
+
+![5x5 grid](./images/image.png)
+
+Delete only faces in edit mode  
+
+![delete faces](./images/image(1).png)
+
+
+Extrude 5 times and delete only faces again  
+
+![3d grid](./images/image(2).png)
+
+Run the mesh maze  
+
+![3d maze](./images/image(3).png)
+
+This leaves the edges in the maze selected.  
+
+
+In edge mode, invert the selection and delete those edges.  
+
+Add a skin modifier , and decrease the vertex radius.  
+
+![skin modifier](./images/image(4).png)
+
+Mark one of the maze path ends as the root.  
+Add a subdivision surface modifier.  
+
+![sub division](./images/image(5).png)
+
+
+
+
