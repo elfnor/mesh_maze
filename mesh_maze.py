@@ -170,7 +170,7 @@ def bevel_extrude(bm, sel_geom, maze_params, link_centers, vert_centers):
     for geom in sel_geom:
         geom.select = False
 
-    if abs(maze_params['offset']) > 0.001:
+    if (abs(maze_params['offset']) > 0.001) and (len(bm.faces) > 0):
         # bevel the whole mesh selection
         bevel_faces = bmesh.ops.bevel(
             bm,
