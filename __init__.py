@@ -25,7 +25,7 @@ bl_info = {
     "name": "Maze any Mesh",
     "author": "elfnor <elfnor.com>",
     "version": (1, 2),
-    "blender": (3, 20, 0),
+    "blender": (3, 60, 0),
     "location": "View3D > EditMode > Mesh > Maze mesh selection",
     "description": "Convert any mesh to a maze pattern",
     "warning": "",
